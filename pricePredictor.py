@@ -43,36 +43,35 @@ class classifier:
     def train(self,prices_df,verbose=False):
         clf_list=[]
         f1_list=[]
-        for i in range(0,1):
-            examples_df=create_training_df(prices_df,True)
-            m=len(examples_df)
-            n=len(examples_df.columns)
-            training_df=examples_df.head(m-m//4)
-            test_df=examples_df.tail(m//4)
-            features=training_df.iloc[:,0:n-1]
-            labels=training_df['labels']
-            clf_list.append(LinearSVC(fit_intercept=False))
-            clf_list[-1].fit(features.values,labels.values)
-            y_pred=clf_list[-1].predict(features.values)
-            y_true=labels
-            if verbose:
-                print('------------------------------------')
-                print('Training set')
-                print(classification_report(y_true, y_pred))
-                print('------------------------------------')
+        examples_df=create_training_df(prices_df,True)
+        m=len(examples_df)
+        n=len(examples_df.columns)
+        training_df=examples_df.head(m-m//4)
+        test_df=examples_df.tail(m//4)
+        features=training_df.iloc[:,0:n-1]
+        labels=training_df['labels']
+        clf_list.append(LinearSVC(fit_intercept=False))
+        clf_list[-1].fit(features.values,labels.values)
+        y_pred=clf_list[-1].predict(features.values)
+        y_true=labels
+        if verbose:
+            print('------------------------------------')
+            print('Training set')
+            print(classification_report(y_true, y_pred))
+            print('------------------------------------')
 
-            features_test=test_df.iloc[:,0:n-1]
-            labels_test=test_df['labels']
-            y_pred_test = clf_list[-1].predict(features_test.values)
-            y_true_test=labels_test
-            y_true_test=np.array(y_true_test)
-            y_pred_test=np.array(y_pred_test)
-            if verbose:
-                print('------------------------------------')
-                print('Test set')
-                print(classification_report(y_true_test, y_pred_test))
-                print('------------------------------------')
-            f1_list.append(f1_score(y_true_test, y_pred_test))
+        features_test=test_df.iloc[:,0:n-1]
+        labels_test=test_df['labels']
+        y_pred_test = clf_list[-1].predict(features_test.values)
+        y_true_test=labels_test
+        y_true_test=np.array(y_true_test)
+        y_pred_test=np.array(y_pred_test)
+        if verbose:
+            print('------------------------------------')
+            print('Test set')
+            print(classification_report(y_true_test, y_pred_test))
+            print('------------------------------------')
+        f1_list.append(f1_score(y_true_test, y_pred_test))
 
         self.clf=clf_list[f1_list.index(max(f1_list))]
         return max(f1_list)
