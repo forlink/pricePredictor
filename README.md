@@ -19,4 +19,6 @@ The features are created in this way:
 
 The predict() method accepts a DataFrame in input with at least 5 rows and returns 1 if the price is supposed to increase in the next time unit or -1 if the price is supposed to decrease.
 	
+The algorithm achieves a f1-score between 0.55 and 0.60 which can make it useful for actual trading.
+	
 Launch demo.py for demonstration
